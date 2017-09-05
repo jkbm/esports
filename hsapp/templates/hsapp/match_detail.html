@@ -1,0 +1,62 @@
+{% extends 'hsapp/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/match.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script> 
+$(document).ready(function(){
+    $(".game").click(function(){
+      $(this)
+        .find(".game-info").slideToggle("slow");
+    });
+});
+</script>
+<style> 
+    .gameinfo,.game {
+        padding: 5px;
+        text-align: center;
+        margin: 0 auto;
+        width: 15%;
+        border-radius: 6px;
+    }
+    
+    .game-info {
+        padding: 50px;
+        display: none;
+        color: black;
+    }
+    .game:hover{
+      background: lightcyan;
+    }
+  </style>
+
+<div class='match'>
+<h1> {{ match }} </h1> 
+<h2> {{ match.stage }} </h2>
+<div class="row">
+  <div class="col-sm-5"><h2>{{ match.player1 }}</h2><img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player1.image }}' alt='Player`s photo'></div>
+  <div class="col-sm-2"><h2>VS</h2><br><h3>{{ match.score }}</h3></div>
+  <div class="col-sm-5"><h2>{{ match.player2 }}</h2><img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player2.image }}' alt='Player`s photo'></div>
+</div>
+{% for game in games %}
+  <div class='game'>
+    {% if game.winner == game.player1 %}
+    <div class="row">
+      <div class="col-sm-6 winner leftc"><img src='{{ MEDIA_URL }}/media/classes/{{ game.class1 }}.png'></div>
+      <div class="col-sm-6 rightc"><img src='{{ MEDIA_URL }}/media/classes/{{ game.class2 }}.png'></div>
+    </div>
+    {% else %}
+    <div class="row">
+      <div class="col-sm-6 leftc"><img src='{{ MEDIA_URL }}/media/classes/{{ game.class1 }}.png'></div>
+      <div class="col-sm-6 winner rightc"><img src='{{ MEDIA_URL }}/media/classes/{{ game.class2 }}.png'></div>
+    </div>
+    {% endif %}
+    <div class='game-info'>Game info here</div>
+  </div>
+{% endfor %}
+{% if user.is_authenticated %}
+<a href="{% url 'hs:game_add' match=match.pk %}">Add games <span class="glyphicon glyphicon-pencil"></span> </a> 
+{% endif %}
+</div>
+
+{% endblock %}

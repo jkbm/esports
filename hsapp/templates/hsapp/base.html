@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Esports world</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="shortcut icon" type="image/png" href="{% static '/favicon.ico'%}"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Abril+Fatface&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Merriweather&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/HS.css' %}">  
+        {% block style %}
+        {% endblock %} 
+    </head>
+<body>
+    <div class="page-header">
+        <div class="logos">
+            <div class='left'><h1><a href="/" >Esports Universe</a></h1></div>
+            <div class='right'><a style = 'text-decoration:none;' href='/hs/'><img class='main-logo' src="{% static 'images/logo-small-914.png' %}"></a></div>
+        </div>
+        <div class='controls'>
+            {% if user.is_authenticated %}
+            <p style="font-size: 18" class="top-menu">Hello, {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small>
+                <a href="{% url 'hs:control_panel' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="{% url 'hs:players_list' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span></a>     
+            </p>           
+            {% else %}
+                <a href="{% url 'admin:index' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+            {% endif %}
+        </div>
+    </div>
+        <nav>
+            <a href="/hs/">Home</a> |
+            <a href="/hs/tournament_list/">Tournaments</a> |
+            <a href="/hs/players/">Players</a> |
+            <div class="dropdown">
+                    <button class="dropbtn">Cards&darr;</button>
+                    <div class="dropdown-content">
+                        <h4> Standard </h4>
+                        <a href="/hs/cards/1001">Knights of the Frozen Throne</a>
+                        <a href="/hs/cards/27">Journey to Un'Goro</a>
+                        <a href="/hs/cards/25">Mean Streets of Gadgetzan</a>
+                        <a href="/hs/cards/24">One Night in Karazhan</a>
+                        <a href="/hs/cards/21">Whispers of the Old Gods</a>
+                        <a href="/hs/cards/3">Expert</a>
+                        <a href="/hs/cards/2">Basic</a>
+                        <h4> Wild </h4>
+                        <a href="/hs/cards/20">League OF Explorers</a>
+                        <a href="/hs/cards/15">The Grand Tournament</a>
+                        <a href="/hs/cards/14">Blackrock Mountain</a>
+                        <a href="/hs/cards/13">Goblins vs Gnomes</a>
+                        <a href="/hs/cards/12">Naxxramas</a>
+                        <a href="/hs/cards/4">Hall of Fame</a>
+                    </div>
+                  </div>|
+            <a href="/hs/about/">About</a>
+        </nav>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{ message }}
+                </div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="content container">
+        <div>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
+
+

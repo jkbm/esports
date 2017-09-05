@@ -1,0 +1,54 @@
+{% extends 'hsapp/base.html' %}
+{% block style %}
+<style>
+.tcontainer{
+    margin: auto;
+    width: 50%;
+    overflow: hidden;
+    max-width: 500px;
+    position: relative;
+    margin-bottom: 10px;
+}
+.tl-logo {
+    border-radius: 6px;
+    width: 100%;
+    transition: all 0.3s ease-out;
+}
+.tl-logo:hover{
+    -webkit-transform:scale(1.25); /* Safari and Chrome */
+    -moz-transform:scale(1.25); /* Firefox */
+    -ms-transform:scale(1.25); /* IE 9 */
+    -o-transform:scale(1.25); /* Opera */
+    transform:scale(1.25);
+}
+.tl-title{
+    left: 0;
+    position:absolute;
+    text-align:center;
+    color: black;
+    bottom: 0;
+    width: 100%;
+    border: 3px solid black;
+    background-color: white;
+}
+</style>
+{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% for tournament in tournaments%}
+    
+    <div class='tcontainer'>
+        <a href="{% url 'hs:tournament_detail' pk=tournament.pk %}">
+        <img class='tl-logo' src='{{ MEDIA_URL }}/media/{{ tournament.image }}'> 
+        <h3 class='tl-title'>{{ tournament.title }}</h3>
+        </a>
+    </div>
+    
+{% endfor %}
+{% endblock %}

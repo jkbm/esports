@@ -1,0 +1,56 @@
+{% extends 'hsapp/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/tournament.css' %}">
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+<div class="centered">
+    <h2 align='center'>{{ tournament.title }}</h2>
+    {% if tournament.image %}
+     <img class='tlogo' style='display: block; margin:auto;' src='{{ MEDIA_URL }}/media/{{ tournament.image }}'>
+    {% endif %}
+    <p>{{ tournament.start_date }} - {{ tournament.end_date }}</p>
+    {% if tournament.format %}
+    <p>{{ tournament.format }}</p>
+    {% endif %}
+    {% if tournament.winner %}
+    <p>Winner: <a href='{% url "hs:player_detail" pk=tournament.winner.pk %}'>{{ tournament.winner }}</a></p>
+    {% endif %}
+    <p><a class="btn btn-info" href='{% url "hs:tournament_bracket" pk=tournament.pk %}'>Groups & Bracket</a></p>
+    <hr>
+    <div class='players'>
+        Participants:
+        {% for player in players %}
+         <p><a href="{% url 'hs:player_detail' pk=player.pk %}"><img src='{{ player.country.flag }}'>{{ player.name }}</a></p>
+        {% endfor %}
+    </div>
+    <hr>
+    Matches:
+    {% for match in matches %}
+        {% if match.stage == 'Finals' %}
+            <div style = 'color:red;'><a href="{% url 'hs:match_detail' pk=match.pk %}" > {{match.stage}} : {{match}} </a></div>
+        {% elif match.stage == 'Semifinals' %}
+            <div style = 'color:green;'><a href="{% url 'hs:match_detail' pk=match.pk %}">{{match.stage}} : {{match}}</div>
+        {% else %}
+            <div><a href="{% url 'hs:match_detail' pk=match.pk %}">{{match.stage}} : {{match}}</div>
+        {% endif %}
+    {% endfor %}
+    <hr>
+    <div class='stream'>
+        <h2> Stream: </h2>
+            <iframe
+            src="http://player.twitch.tv/?channel=playhearthstone&muted=true"
+            height="360"
+            width="640"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen="true">
+        </iframe>
+    </div>
+</div>
+{% endblock %}

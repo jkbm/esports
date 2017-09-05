@@ -1,0 +1,30 @@
+{% extends 'hsapp/base.html' %}
+{% block content %}
+<div class='container'>
+  <div class="row">
+    <div class="col-sm-4">
+        <h2>Recent tournaments: </h2>
+        {% for tournament in tournaments %}
+        <p><a href="{% url 'hs:tournament_detail' pk=tournament.pk %}">{{ tournament }}({{ tournament.start_date }}-{{ tournament.end_date }})</a></p>
+        {% endfor %}
+      <p>Lorem ipsum...</p>
+    </div>
+    <div class="col-sm-4" >
+        <h2>Recent and upcoming matches</h2>
+        {% for match in upcoming_matches %}
+            <p>{{ match.date|date:'m-d' }}: {{ match }} </p>
+        {% endfor %}
+      <hr>
+        {% for match in matches %}
+            <p><a href="{% url 'hs:match_detail' pk=match.pk %}">{{ match }}({{ match.date|date:'Y-m-d'  }}) </a></p>
+        {% endfor %}
+    </div>
+    <div class="col-sm-4">
+        <h2>Top players: </h2>
+        {% for player in players %}
+            <p><a href="{% url 'hs:player_detail' pk=player.player.pk %}"> {{ player.player }} </a> | {{ player.wins }} - {{ player.loses }}</p>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

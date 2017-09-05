@@ -1,0 +1,12 @@
+{% extends 'hsapp/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/player.css' %}">
+
+<h1> {{ player.name }} <img src='{{ player.country.flag }}'></h1>
+<img class='profile_pic' src='{{ MEDIA_URL }}/media/{{ player.image }}' alt='Player`s photo'>
+<h2> Past tournaments: </h2>
+{% for tournament in tournaments %}
+    <p><a href="{% url 'hs:tournament_detail' pk=tournament.pk %}"> {{ tournament.title }} </a></p>
+{% endfor %}
+{% endblock %}
