@@ -28,15 +28,68 @@ $(document).ready(function(){
     .game:hover{
       background: lightcyan;
     }
+    .decks{
+      padding-top: 20px;
+    }
+    .thumbnail {
+      margin: 0 auto;
+      position: relative;
+      width: 130px;
+      height: 50px;
+      overflow: hidden;
+    }
+    .thumbnail img {
+      position: absolute;
+      left: 50%;
+      top: 225;
+      height: 100%;
+      width: auto;
+      -webkit-transform: translate(-50%,-50%);
+          -ms-transform: translate(-50%,-50%);
+              transform: translate(-50%,-50%);
+    }
+    .thumbnail img.portrait {
+      width: 100%;
+      height: auto;
+    }
   </style>
 
 <div class='match'>
 <h1> {{ match }} </h1> 
 <h2> {{ match.stage }} </h2>
 <div class="row">
-  <div class="col-sm-5"><h2>{{ match.player1 }}</h2><img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player1.image }}' alt='Player`s photo'></div>
-  <div class="col-sm-2"><h2>VS</h2><br><h3>{{ match.score }}</h3></div>
-  <div class="col-sm-5"><h2>{{ match.player2 }}</h2><img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player2.image }}' alt='Player`s photo'></div>
+  <div class="col-sm-5">
+    <h2>{{ match.player1 }}</h2>
+    <img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player1.image }}' alt='Player`s photo'>
+    <div class="decks">
+      <h4> Decklists: </h4>
+      {% for deck in decks1 %}
+      <div class="thumbnail">
+          <a href="{{ MEDIA_URL }}/media/{{ deck.image }}"><img src="{{ MEDIA_URL }}/media/{{ deck.image }}" class="portrait" alt="Image" /></a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <h2>VS</h2>
+    <br>
+    <h3>{{ match.score }}</h3>
+    <br>
+    <h4>{{ match.date }}
+  
+  </div>
+  <div class="col-sm-5">
+    <h2>{{ match.player2 }}</h2>
+    <img class='match_pic' src='{{ MEDIA_URL }}/media/{{ match.player2.image }}' alt='Player`s photo'></a>
+    <div class="decks">
+      <h4> Decklists: </h4>
+      {% for deck in decks2 %}
+          <div class="thumbnail">
+            <a href="{{ MEDIA_URL }}/media/{{ deck.image }}"><img src="{{ MEDIA_URL }}/media/{{ deck.image }}" class="portrait" alt="Image" /></a>
+          </div>
+      {% endfor %}      
+    </div>
+  </div>
 </div>
 {% for game in games %}
   <div class='game'>

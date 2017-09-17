@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib import messages
 from django.views import View
+from braces.views import LoginRequiredMixin
 from .extras import get_top, get_cards, get_names,add_cards
 from .serializers import PlayerSerializer, TournamentSerializer, MatchSerializer
 from rest_framework.generics import ListCreateAPIView
@@ -168,6 +169,8 @@ def match_detail(request, pk):
     """
     match = Match.objects.get(pk=pk)
     games = Game.objects.filter(match=match)
+    decks1 = Deck.objects.filter(player=match.player1, tournament=match.tournament)
+    decks2 = Deck.objects.filter(player=match.player2, tournament=match.tournament)
     match_info = {}
     i = 1
     for game in games:
@@ -179,7 +182,8 @@ def match_detail(request, pk):
             match_info['game%s'%i] = '{0}v{1}. Winner: {2}({3})'.format(
                 game.class1, game.class2, game.winner, game.class2)
             i += 1
-    return render(request, 'hsapp/match_detail.html', {'match': match, 'games': games})
+    return render(request, 'hsapp/match_detail.html', {'match': match, 'games': games, 
+                                                       'decks1': decks1, 'decks2': decks2})
 
 def match_list(request, pk, **kwargs):
     """
@@ -294,7 +298,7 @@ def cards(request, card_set=1001):
 def about(request):
     return redirect('core:nopage')
 
-class FeedbackView(View):
+class FeedbackView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = FeedbackForm()

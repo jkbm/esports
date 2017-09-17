@@ -107,8 +107,8 @@ class Game(models.Model):
     match = models.ForeignKey(Match)
     player1 = models.ForeignKey(Player, related_name='pl1', null=True)
     player2 = models.ForeignKey(Player, related_name='pl2', null=True)
-    class1 = models.CharField(max_length=20, choices=CLASSES)
-    class2 = models.CharField(max_length=20, choices=CLASSES)
+    class1 = models.CharField(max_length=50, choices=CLASSES)
+    class2 = models.CharField(max_length=50, choices=CLASSES)
     winner = models.ForeignKey(Player, related_name='winner', null=True)
 
     def __str__(self):
@@ -177,9 +177,27 @@ class Card(models.Model):
 
 
 class Deck(models.Model):
+    CLASSES = (
+    ('MAGE', 'Mage'),
+    ('WARRIOR', 'Warrior'),
+    ('WARLOCK', 'Warlock'),
+    ('HUNTER', 'Hunter'),
+    ('PRIEST', 'Priest'),
+    ('DRUID', 'Druid'),
+    ('ROGUE', 'Rogue'),
+    ('PALADIN', 'Paladin'),
+    ('SHAMAN', 'Shaman'))
 
-    title = models.CharField(max_length=50)
-    cards = models.ManyToManyField(Card)
+    player = models.ForeignKey(Player, null=True, blank=True)
+    tournament = models.ForeignKey(Tournament, null=True, blank=True)
+    deck_class = models.CharField(max_length=50, choices=CLASSES, null=True, blank=True)
+    archetype = models.CharField(max_length=50, null=True, blank=True)
+    cards = models.ManyToManyField(Card, blank=True)
+    image = models.ImageField(upload_to='hsapp/decks/', null=True, blank=True)
+
+    def __str__(self):
+        deck_title = "{0} {1} - {2} {3}".format(self.player, self.tournament, self.archetype, self.deck_class)
+        return deck_title
 
 
 class Deckset(models.Model):
