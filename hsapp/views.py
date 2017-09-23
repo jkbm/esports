@@ -11,6 +11,8 @@ from django.contrib import messages
 from django.views import View
 from braces.views import LoginRequiredMixin
 from .extras import get_top, get_cards, get_names,add_cards
+from .misc import add_matches
+
 from .serializers import PlayerSerializer, TournamentSerializer, MatchSerializer
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView 
@@ -316,12 +318,8 @@ def temp(request):
     """
     Temporary view
     """
-    cards = get_cards()
-    print("Got cards")
-    cards_data = get_names(cards, len(cards))
-    print("Got cards data")
-    #add_cards(cards_data)
-    print("Added cards")
+    add_matches()
+    print("Matches cards")
 
 
     return render(request, 'hsapp/temp.html')

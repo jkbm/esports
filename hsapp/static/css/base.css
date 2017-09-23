@@ -31,6 +31,20 @@ a:hover {
     margin-top: 0;
     width: 100%;
     height: 170px;
+    border-bottom: 0;
+    margin-bottom: 0;
+    background: #360033;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #0b8793, #360033);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #0b8793, #360033); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.page-header h1{
+    float: left;
+    display: inline-block;
+    margin-left: 5px;
+    font-family: 'Lobster', cursive;
+    font-size: 76px;
+    vertical-align: middle;
 }
 
 .left {
@@ -58,52 +72,13 @@ a:hover {
     float:right;
 }
 
-.page-header h1{
-    float: left;
-    display: inline-block;
-    margin-left: 5px;
-    font-family: 'Lobster', cursive;
-    font-size: 96px;
-    vertical-align: middle;
-}
-
 .main-logo{
     margin: 0;
     padding: 0;
     display: inline-block;
+    width: 80%;
 }
 
-.dropbtn {
-    color: white;
-    border: none;
-    cursor: pointer;
-    background: none;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    background: #3894ea;
-    display: none;
-    position: absolute;
-    min-width: 180px;
-    z-index: 1;
-}
-
-.dropdown-content a {
-    font-size: 14px;
-    color: black;
-    padding: 2px 6px;
-    text-decoration: none;
-    display: block;                                        
-    border-bottom: 1px solid black;
-}
-
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-    display: block;
+h4 {
+    color:black;
 }

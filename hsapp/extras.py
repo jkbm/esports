@@ -88,3 +88,4 @@ def add_cards(data):
                                 CLASS=card[3], rarity=card[4], cardtype=card[5],
                                 card_set=card[6], image='cards\{0}.png'.format(card[7]),
                                 flavortext=card[8], artist=card[9], cardID=card[7])
+

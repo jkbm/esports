@@ -15,6 +15,7 @@
     transition: all 0.3s ease-out;
 }
 .tl-logo:hover{
+    border-radius: 6px;
     -webkit-transform:scale(1.25); /* Safari and Chrome */
     -moz-transform:scale(1.25); /* Firefox */
     -ms-transform:scale(1.25); /* IE 9 */
@@ -22,14 +23,17 @@
     transform:scale(1.25);
 }
 .tl-title{
-    left: 0;
+    font-size: 16px;
     position:absolute;
     text-align:center;
-    color: black;
+    padding: 3px;
+    margin-bottom: 0;
+    width:100%;
     bottom: 0;
-    width: 100%;
-    border: 3px solid black;
-    background-color: white;
+    color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: black;
 }
 </style>
 {% endblock %}

@@ -3,8 +3,7 @@
     <head>
         <title>Esports world</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
         <link rel="shortcut icon" type="image/png" href="{% static '/favicon.ico'%}"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -25,41 +24,44 @@
             <div class='right'><a style = 'text-decoration:none;' href='/hs/'><img class='main-logo' src="{% static 'images/logo-small-914.png' %}"></a></div>
         </div>
         <div class='controls'>
-            {% if user.is_authenticated %}
-            <p style="font-size: 18" class="top-menu">Hello, {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small>
-                <a href="{% url 'hs:control_panel' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="{% url 'hs:players_list' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span></a>     
-            </p>           
-            {% else %}
-                <a href="{% url 'admin:index' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
-            {% endif %}
+
         </div>
     </div>
-        <nav>
-            <a href="/hs/">Home</a> |
-            <a href="/hs/tournament_list/">Tournaments</a> |
-            <a href="/hs/players/">Players</a> |
-            <div class="dropdown">
-                    <button class="dropbtn">Cards&darr;</button>
-                    <div class="dropdown-content">
-                        <h4> Standard </h4>
-                        <a href="/hs/cards/1001">Knights of the Frozen Throne</a>
-                        <a href="/hs/cards/27">Journey to Un'Goro</a>
-                        <a href="/hs/cards/25">Mean Streets of Gadgetzan</a>
-                        <a href="/hs/cards/24">One Night in Karazhan</a>
-                        <a href="/hs/cards/21">Whispers of the Old Gods</a>
-                        <a href="/hs/cards/3">Expert</a>
-                        <a href="/hs/cards/2">Basic</a>
-                        <h4> Wild </h4>
-                        <a href="/hs/cards/20">League OF Explorers</a>
-                        <a href="/hs/cards/15">The Grand Tournament</a>
-                        <a href="/hs/cards/14">Blackrock Mountain</a>
-                        <a href="/hs/cards/13">Goblins vs Gnomes</a>
-                        <a href="/hs/cards/12">Naxxramas</a>
-                        <a href="/hs/cards/4">Hall of Fame</a>
-                    </div>
-                  </div>|
-            <a href="/hs/about/">About</a>
+        <nav class='navbar navbar-inverse'>
+            <ul class="nav navbar-nav">
+                <li><a href="/hs/">Home</a></li>
+                <li><a href="/hs/tournament_list/">Tournaments</a></li>
+                <li><a href="/hs/players/">Players</a></li>
+                <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Cards&darr;</a>
+                        <ul class="dropdown-menu">
+                            <li><h4> Standard </h4></li>
+                            <li><a href="/hs/cards/1001">Knights of the Frozen Throne</a></li>
+                            <li><a href="/hs/cards/27">Journey to Un'Goro</a></li>
+                            <li><a href="/hs/cards/25">Mean Streets of Gadgetzan</a></li>
+                            <li><a href="/hs/cards/24">One Night in Karazhan</a></li>
+                            <li><a href="/hs/cards/21">Whispers of the Old Gods</a></li>
+                            <li><a href="/hs/cards/3">Expert</a></li>
+                            <li><a href="/hs/cards/2">Basic</a></li>
+                            <li><h4> Wild </h4></li>
+                            <li><a href="/hs/cards/20">League OF Explorers</a></li>
+                            <li><a href="/hs/cards/15">The Grand Tournament</a></li>
+                            <li><a href="/hs/cards/14">Blackrock Mountain</a></li>
+                            <li><a href="/hs/cards/13">Goblins vs Gnomes</a></li>
+                            <li><a href="/hs/cards/12">Naxxramas</a></li>
+                            <li><a href="/hs/cards/4">Hall of Fame</a></li>
+                        </ul>
+                <li><a href="/hs/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li><h3>Hello, {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></h3></li>
+                    <li><a href="{% url 'hs:control_panel' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span>Control panel</a></li>
+                    <li><a href="{% url 'hs:players_list' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span>Players</a></li>     
+                    {% else %}
+                    <li><a href="{% url 'admin:index' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span>Login</a></li>
+                    {% endif %}
+            </ul>
         </nav>
     {% if messages %}
         <ul class="messages">
