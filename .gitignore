@@ -2,8 +2,8 @@
 *~
 __pycache__
 virenv
-db.sqlite3
-/static
+///db.sqlite3
+///static
 .DS_Store
 esports/local_settings.py
 esports/media/cards
