@@ -24,15 +24,18 @@
 }
 .tl-title{
     font-size: 16px;
-    position:absolute;
+    font-family: "Lucida Console", Monaco, monospace;
     text-align:center;
-    padding: 3px;
+    position:absolute;
+    overflow: hidden;
+    
+    padding: 5px;
     margin-bottom: 0;
     width:100%;
     bottom: 0;
     color: white;
-    border: 2px solid black;
-    border-radius: 5px;
+    border-bottom: 1px solid black;
+    border-radius: inherit;
     background-color: black;
 }
 </style>
@@ -45,7 +48,7 @@
     {% endfor %}
 </ul>
 {% endif %}
-{% for tournament in tournaments%}
+{% for tournament in tournaments %}
     
     <div class='tcontainer'>
         <a href="{% url 'hs:tournament_detail' pk=tournament.pk %}">
@@ -54,5 +57,16 @@
         </a>
     </div>
     
+{% endfor %}
+<hr style="max-width: 550px;">
+{% for tournament in tournaments_future %}
+
+<div class='tcontainer'>
+    <a href="{% url 'hs:tournament_detail' pk=tournament.pk %}">
+    <img class='tl-logo' src='{{ MEDIA_URL }}/media/{{ tournament.image }}'> 
+    <h3 class='tl-title'>{{ tournament.title }}</h3>
+    </a>
+</div>
+
 {% endfor %}
 {% endblock %}

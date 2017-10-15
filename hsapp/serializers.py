@@ -14,12 +14,12 @@ class TournamentSerializer(serializers.ModelSerializer):
     players = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field='name'
-     )
+        slug_field='name')
 
     class Meta:
         model = Tournament
-        fields = ('title', 'start_date', 'end_date', 'winner', 'players', 'groups', 'format', 'image')
+        fields = ('title', 'start_date', 'end_date', 'winner',
+                  'players', 'groups', 'format', 'image')
 
 class MatchSerializer(serializers.ModelSerializer):
 
@@ -29,4 +29,6 @@ class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = ('date', 'time', 'stage', 'format', 'player1', 'player2', 'winner', 'score')
+        fields = ('date', 'time', 'stage', 'format',
+                  'player1', 'player2', 'winner', 'score')
+                  

@@ -19,7 +19,7 @@ class HsappTest(TestCase):
 
     def test_hsapp_index_view(self):
         w = self.create_player()
-        url = reverse("hsapp.views.index")
+        url = reverse("hsapp.views.tournament_list")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertIn(w.title, resp.content)

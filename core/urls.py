@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^ajax$', views.ajax, name='ajax'),
+    url(r'^ajax2$', views.ajax2, name='ajax2'),
     url(r'^nopage$', views.nopage, name='nopage'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

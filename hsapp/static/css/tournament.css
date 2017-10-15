@@ -22,3 +22,37 @@ a:hover {
     width: 100%;
     margin: 0 auto;
 }
+
+.winner{
+    width: 100px;
+}
+
+.today{
+
+
+}
+.today a{
+    font-size: 18px;
+    color: white;
+}
+
+.casters{
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+
+}
+.caster {
+    text-align: justify;
+    margin: 15px;
+    display: inline-block;
+}
+
+.caster img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid white;
+    width: 140px;
+    border-radius: 1px;
+}

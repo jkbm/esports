@@ -11,12 +11,15 @@
             <link rel="stylesheet" href="{% static 'css/bracket.css' %}">
             <style>
                 .link{
-                    border: 1px solid black;
+                    background: #7986AC;
+                    color: white;
+                    font-size: 12px;
                     padding: 1px;
                 }
             </style>
     </head>
 <body>
+    <a href="{% url 'hs:tournament_detail' pk=tournament.pk %}"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>
     <h1>{{ tournament.title }}</h1>
     <div class='container'>
             <div class='info'>
@@ -45,7 +48,7 @@
                         {% for match in quarterfinals %}
                         <li class="spacer">&nbsp;</li>              
                         <li class="game game-top {% if match.player1 == match.winner %}winner{% endif %}">{{ match.player1.name }} <span>{{ match.score1 }}</span></li>
-                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}">Info</a></li>
+                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}"> Match info</a></li>
                         <li class="game game-bottom {% if match.player2 == match.winner %}winner{% endif %}">{{ match.player2.name }} <span>{{ match.score2 }}</span></li>
                         {% endfor %}
                         
@@ -63,7 +66,7 @@
                             {% for match in quarterfinals %}
                             <li class="spacer">&nbsp;</li>              
                             <li class="game game-top {% if match.player1 == match.winner %}winner{% endif %}">{{ match.player1.name }} <span>{{ match.score1 }}</span></li>
-                            <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}">Info</a></li>
+                            <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}">Match info</a></li>
                             <li class="game game-bottom {% if match.player2 == match.winner %}winner{% endif %}">{{ match.player2.name }} <span>{{ match.score2 }}</span></li>
                             {% endfor %}
                             
@@ -82,7 +85,7 @@
                         <li class="spacer">&nbsp;</li>
                         
                         <li class="game game-top {% if match.player1 == match.winner %}winner{% endif %}">{{ match.player1.name }} <span>{{ match.score1 }}</span></li>
-                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}">Info</a></li>
+                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=match.pk %}">Match info</a></li>
                         <li class="game game-bottom {% if match.player2 == match.winner %}winner{% endif %}">{{ match.player2.name }} <span>{{ match.score2 }}</span></li>
                         
                         {% endfor %}
@@ -93,7 +96,7 @@
                     <ul class="round round-4">
                         <li class="spacer">&nbsp;</li>
                         <li class="game game-top {% if finals.0.player1 == finals.0.winner %}winner{% endif %}">{{ finals.0.player1.name }} <span>{{ finals.0.score1 }}</span></li>
-                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=finals.0.pk %}">Info</a> </li>
+                        <li class="game game-spacer">&nbsp; <a class="link" href="{% url 'hs:match_detail' pk=finals.0.pk %}">Match info</a> </li>
                         <li class="game game-bottom {% if finals.0.player2 == finals.0.winner %}winner{% endif %}">{{ finals.0.player2.name }} <span>{{ finals.0.score2 }}</span></li>
                         
                         <li class="spacer">&nbsp;</li>

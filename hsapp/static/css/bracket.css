@@ -42,7 +42,7 @@ h1{
 }
 
 #tournament{
-  background: lightblue;
+  background: #061339;
   color: black;
   border: 2px solid;
   border-radius: 10px;
@@ -52,7 +52,7 @@ h1{
 .info{
   width: 300px;
   float: left;
-  background: darkblue;
+  background: #061339;
   border: 2px solid;
   border-radius: 10px;
   padding: 20px;
@@ -61,25 +61,27 @@ h1{
 
 li.game{
   padding-left:20px;
+  color: white;
 }
 
 li.game.winner{
   font-weight:bold;
+  
 }
 li.game span{
   float:right;
   margin-right:5px;
 }
 
-li.game-top{ border-bottom:3px solid black; }
+li.game-top{ border-bottom:3px solid lightgrey; }
 
 li.game-spacer{ 
-  border-right:3px solid black;
+  border-right:3px solid lightgrey;
   min-height:40px;
 }
 
 li.game-bottom{ 
-  border-top:3px solid black;
+  border-top:3px solid lightgrey;
 }
   
 .tg  {border-collapse:collapse;border-spacing:0;}

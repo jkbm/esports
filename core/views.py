@@ -9,6 +9,10 @@ def ajax(request):
 
     return render(request, 'ajax.html')
 
+def ajax2(request):
+
+    return render(request, 'ajax2.html')
+
 def nopage(request):
 
     return render(request, 'under_construction.html')

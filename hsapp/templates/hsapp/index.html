@@ -9,7 +9,7 @@
         {% endfor %}
         <h2>Recent and upcoming matches: </h2>
         {% for match in upcoming_matches %}
-            <p>{{ match.date|date:'m-d' }}: {{ match }} </p>
+            <p><a href="{% url 'hs:match_detail' pk=match.pk %}">{{ match.date|date:'m-d' }}: {{ match }} </a></p>
         {% endfor %}
       <hr>
         {% for match in matches %}

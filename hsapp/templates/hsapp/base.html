@@ -13,7 +13,12 @@
         <link href="//fonts.googleapis.com/css?family=Abril+Fatface&subset=latin,latin-ext" rel="stylesheet" type="text/css">
         <link href="//fonts.googleapis.com/css?family=Merriweather&subset=latin,latin-ext" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
-        <link rel="stylesheet" href="{% static 'css/HS.css' %}">  
+        <link rel="stylesheet" href="{% static 'css/HS.css' %}">
+        <style>
+        h3{
+            margin-top: 15px;
+        }
+        </style>  
         {% block style %}
         {% endblock %} 
     </head>
@@ -74,10 +79,8 @@
         </ul>
     {% endif %}
     <div class="content container">
-        <div>
             {% block content %}
             {% endblock %}
-        </div>
     </div>
 </body>
 </html>
