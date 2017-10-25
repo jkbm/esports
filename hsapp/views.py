@@ -7,11 +7,12 @@ from .models import Tournament, Match, Player, Game, Group, Card, Deck, Deckset
 from .forms import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib import messages
 from django.views import View
 from braces.views import LoginRequiredMixin
-from .extras import get_top, get_cards, get_names,add_cards
+from .extras import get_top, get_cards, get_names, add_cards
 from .utils import get_stats, Uploader
 
 from .serializers import PlayerSerializer, TournamentSerializer, MatchSerializer
@@ -38,7 +39,7 @@ def index(request):
     players = Player.objects.all()
     top_players = get_top(players)
 
-    return render(request, 'hsapp/index.html', {'tournaments': tournaments,
+    return render(request, 'hsapp/index.html', {'tournaments': tournaments[:5],
                                                 'matches': matches,
                                                 'upcoming_matches': upcoming_matches,
                                                 'players': top_players})
@@ -46,11 +47,19 @@ def index(request):
 def tournament_list(request):
     tournaments = Tournament.objects.filter(
         end_date__lte=timezone.now(), winner__isnull=False).order_by(
-            'end_date')
+            '-end_date')
     tournaments_future = Tournament.objects.filter(
         end_date__gte=timezone.now()).order_by(
             'end_date')
-    return render(request, 'hsapp/tournament_list.html', {'tournaments': tournaments,
+    page = request.GET.get('page', 1)
+    paginator = Paginator(tournaments, 5)
+    try:
+        tournament_pages = paginator.page(page)
+    except PageNotAnInteger:
+        tournament_pages = paginator.page(1)
+    except EmptyPage:
+        tournament_pages = paginator.page(paginator.num_pages)
+    return render(request, 'hsapp/tournament_list.html', {'tournaments': tournament_pages,
                                                           'tournaments_future': tournaments_future})
 
 def tournament_detail(request, pk):
@@ -58,7 +67,7 @@ def tournament_detail(request, pk):
     Tournament details view
     """
     tournament = get_object_or_404(Tournament, pk=pk)
-    matches = Match.objects.filter(tournament=tournament, finished=True)
+    matches = Match.objects.filter(tournament=tournament, finished=True).reverse()
     upcoming_matches = Match.objects.filter(tournament=tournament, finished=False)
     players = tournament.players.all()
     if tournament.winner:
@@ -183,7 +192,7 @@ def player_detail(request, pk):
             pass
         else:
             tournaments.append(match.tournament)
-    return render(request, 'hsapp/player_detail.html', 
+    return render(request, 'hsapp/player_detail.html',
                   {'player': player,
                    'tournaments': tournaments,
                    'matches': matches[:5],
@@ -270,6 +279,7 @@ def match_add(request, pk=0):
         tournament = Tournament.objects.get(pk=pk)
     else:
         tournament = Tournament.objects.none()
+        tournament.date = timezone.now()
     if request.method == 'POST':
         form = MatchForm(request.POST, tournament=tournament)
         if form.is_valid():
@@ -280,7 +290,8 @@ def match_add(request, pk=0):
             elif 'add-more' in request.POST:
                 return redirect('hs:match_add', pk=match.tournament.pk)
     else:
-        form = MatchForm(initial={"tournament": tournament}, tournament=tournament)
+        form = MatchForm(initial={"tournament": tournament, "date": tournament.start_date},
+                         tournament=tournament)
     return render(request, 'hsapp/match_add.html', {'form': form})
 
 @login_required
@@ -386,19 +397,16 @@ def temp(request):
     """
     Temporary view
     """
-    link = "https://us.battle.net/hearthstone/en/esports/tournament/hct-summer-championship-2017"
-    tpk = 15
-
-    uploader = Uploader(link, tpk)
+    #link = "https://us.battle.net/hearthstone/en/esports/tournament/hct-summer-championship-2017"
+    link = "https://us.battle.net/hearthstone/en/esports/tournament/1701"
+    tpk = 24
+    """
+    uploader = Uploader(link, tpk, False)
     uploader.get_data()
     uploader.clear_nones()
-    uploader.add_group_matches()
+    uploader.get_players()
+    #uploader.add_group_matches()
     uploader.add_playoff_matches()
-    """
-    po, gr, pl = get_data(link)
-    clear_nones(tpk)
-    add_group_matches(gr, tpk)
-    add_playoff_matches(po, tpk)
     """
     return render(request, 'hsapp/temp.html')
 

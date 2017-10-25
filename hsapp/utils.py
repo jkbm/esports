@@ -15,11 +15,12 @@ class Uploader():
     """
         Class for automatic data upload from given source.
     """
-
-    def __init__(self, link, tpk):
+    
+    def __init__(self, link, tpk, groups=True):
         self.link = link
         self.tpk = tpk
         self.tournament = Tournament.objects.get(pk=tpk)
+        self.groups = groups
 
     def get_data(self):
         """Get data from web-source"""
@@ -30,16 +31,23 @@ class Uploader():
         result = re.search('\tdata:(.*?)"1.0.0"},', data).groups()
         result = result[0]+'"1.0.0"}'
         jresult = json.loads(result)
-        playoffs = jresult['stages'][1]['brackets'][0]['matches']
-        self.playoffs = sorted(playoffs, key=lambda d: (d['round'], d['ordinal']))
-        self.groups = jresult['stages'][0]['brackets']
-        self.players = jresult['competitors']
-        return self.playoffs, self.groups, self.players
+        if self.groups:
+            playoffs = jresult['stages'][1]['brackets'][0]['matches']
+            self.playoffs = sorted(playoffs, key=lambda d: (d['round'], d['ordinal']))
+            self.groups = jresult['stages'][0]['brackets']
+            self.players = jresult['competitors']
+            return self.playoffs, self.groups, self.players
+        else:
+            playoffs = jresult['stages'][0]['brackets'][0]['matches']
+            self.playoffs = sorted(playoffs, key=lambda d: (d['round'], d['ordinal']))
+            self.players = jresult['competitors']
+            return self.playoffs, self.players
+
 
     def add_group_matches(self, tpk=15):
         """Add group stage matches to DB"""
         for group in self.groups:
-            self.add_matches(group['matches'], self.tournament, bracket_stage="Groups")
+            self.add_matches(group['matches'], bracket_stage="Groups")
 
     def add_group(self, group):
         """Define groups for the tournament"""
@@ -50,22 +58,25 @@ class Uploader():
 
     def add_playoff_matches(self, tpk=15):
         """Add playoff matches to DB"""
-        self.add_matches(self.playoffs, self.tournament)
+        self.add_matches(self.playoffs)
 
-    def add_matches(self, matches, tournament, bracket_stage="Playoffs"):
+    def add_matches(self, matches, bracket_stage="Playoffs"):
         """Add matches and games from given data to DB"""
         # Add or update matches
         for match in matches:
             try:
                 competitors = match['competitors']
-                timestamp = match.get('startDate') or match.get('endDate') or match.get('dateFinished') or time.mktime(tournament.start_date.timetuple())*1e3
 
+                #timestamp = match.get('startDate') or match.get('endDate') or match.get('dateFinished') or time.mktime(self.tournament.start_date.timetuple())*1e3
+                #date = datetime.fromtimestamp(timestamp / 1e3)
+
+                date = self.tournament.start_date
                 for idx, val in enumerate(competitors):
                     if val is None:
                         competitors[idx] = {'name': 'None'}
                 player1 = Player.objects.get(name=competitors[0]['name'])
                 player2 = Player.objects.get(name=competitors[1]['name'])
-                date = datetime.fromtimestamp(timestamp / 1e3)
+                
                 score = "{0}-{1}".format(match['scores'][0]['value'], match['scores'][1]['value'])
                 form = "Best of " + str(match['bestOf'])
                 round = match['round']
@@ -84,10 +95,11 @@ class Uploader():
                     vod_link = ""
                 #Create the object if doesnt exist
                 obj, created = Match.objects.get_or_create(player1=player1, player2=player2,
-                                                           stage=stage, tournament=tournament,
+                                                           stage=stage, tournament=self.tournament,
                                                            round=round)
                 obj.score = score
                 obj.format = form
+                obj.date = date
                 if finished:
                     obj.winner = Player.objects.get(name=match['winner']['name'])
                     obj.finished = finished
@@ -113,17 +125,36 @@ class Uploader():
             game = Game.objects.get_or_create(match=match, player1=p1, player2=p2, 
                                             class1=c1, class2=c2, winner=winner)  
 
-    def get_players(self, players):
+    def get_players(self):
         """Add players that participate in the tournament,
         create them if they are not in the DB"""
-        for p in players:
+
+        base = "esports\media\HSapp\players\\"
+        for p in self.players:
             try:
-                obj, created = Player.objects.get_or_create(name=p['competitor']['name'],
-                                                            country=p['competitor']['nationality'])
+                obj, created = Player.objects.get_or_create(name=p['competitor']['name'])
+
+                file_name = "{0}.jpg".format(p['competitor']['name'])
+                try:
+                    r = requests.get(p['competitor']['headshot'])
+                except Exception as e:
+                    print(e)
+                    r = requests.get("https://d2q63o9r0h0ohi.cloudfront.net/images/media/artwork/artwork1-full-e2b8aa5b1470484b8f8a67022ac2364830e8a5511ca56d6ab00dbe1785413e46fbb919bd95be8df710a6d411bb332cd212ec31190e1d3a7a2d7acc58fc1149fb.jpg")
+                with open(base+"/tmp/temp.png", "wb") as f:
+                    f.write(r.content)
+                reopen = open(base+"/tmp/temp.png", "rb")
+                django_file = File(reopen)
+                try:
+                    obj.country = p['competitor']['nationality']
+                except:
+                    print("No country")
+                obj.image.save(file_name, django_file, save=True)
+                obj.save()
+
                 self.tournament.players.add(obj)
                 print(obj, created)
-            except:
-                print('Failed')
+            except Exception as e:
+                print('Failed' + e)
 
     def clear_nones(self):    
         """Delete matches with undecided opponents

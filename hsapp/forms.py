@@ -17,7 +17,7 @@ class MatchForm(forms.ModelForm):
             self.fields['player2'].queryset = Player.objects.all()
     class Meta:
         model = Match
-        fields = ('tournament', 'date', 'player1', 'player2', 
+        fields = ('tournament', 'date', 'player1', 'player2',
                   'score', 'format', 'stage', 'finished')
 
 class GameForm(forms.ModelForm):
@@ -71,5 +71,5 @@ class FeedbackForm(forms.Form):
 
     name = forms.CharField(max_length=30)
     email = forms.EmailField()
-    feedback = forms.CharField(widget=forms.Textarea )
+    feedback = forms.CharField(widget = forms.Textarea)
     

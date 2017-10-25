@@ -9,4 +9,12 @@ from django.core.files import File
 import json
 import re
 from xml.etree import ElementTree
+def fill_from_text(tpk):
 
+    t = Tournament.objects.get(pk=tpk)
+    players = ['Chakki', 'Nostam', 'Talion', 'AlSkyHigh', 'chessdude123', 'Snail', 'wtybill']
+    casters = []
+    for p in players:
+        obj, created = Player.objects.get_or_create(name=p)
+        t.players.add(obj)
+    t.save()

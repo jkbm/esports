@@ -14,6 +14,27 @@ nav{
     padding-left: 20px;
 }
 
+.dropdown-menu {
+    background: none;
+    margin: 0 auto;
+    width: 100%;
+    text-align:justify;
+}
+.dropdown-inline{
+    margin-left: 10px;
+}
+.dropdown-inline 
+a:link,
+a:visited,
+a:active {
+    color: whitesmoke;
+}
+.dropdown-inline:hover {
+    background-color: lightgray;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
 p{
     font-size: 18px;
 }
