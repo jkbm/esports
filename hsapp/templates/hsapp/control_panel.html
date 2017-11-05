@@ -9,6 +9,7 @@
             <a href="{% url 'hs:match_add' %}" class="btn btn-primary">Add Match</a>
             <a href="{% url 'hs:player_add' %}" class="btn btn-primary" name="add-player">Add Player</a>
             <a href="{% url 'hs:game_add' %}" class="btn btn-primary" name="add-game">Add Game</a>
+            <a href="{% url 'hs:post_add' %}" class="btn btn-primary" name="add-post">Add Article</a>
         </div>
         <div>
         <form method="POST" class="cpanel-form">{% csrf_token %}

@@ -18,6 +18,10 @@
     </div>
     <div class="col-sm-4" >
         <h2>News</h2>
+        {% for post in posts %}
+            <p><a href='{% url "hs:post_detail" pk=post.pk %}'>{{ post.title }}</a></p>
+        {% endfor %}
+        <a href="{% url 'hs:post_list'%}" style='float: right'>See all</a>
     </div>
     <div class="col-sm-4">
         <h2>Top players: </h2>

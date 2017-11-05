@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import EmailValidator
 from django.db.models import Q
-from .models import Game, Match, Tournament, Group, Player
+from .models import Game, Match, Tournament, Group, Player, Post
 
 
 class MatchForm(forms.ModelForm):
@@ -71,5 +71,11 @@ class FeedbackForm(forms.Form):
 
     name = forms.CharField(max_length=30)
     email = forms.EmailField()
-    feedback = forms.CharField(widget = forms.Textarea)
+    feedback = forms.CharField(widget=forms.Textarea)
+
+class AddPostForm(forms.Form):
+
+    title = forms.CharField()
+    tags = forms.CharField()
+    article = forms.CharField(widget=forms.Textarea)
     

@@ -250,9 +250,14 @@ class Deckset(models.Model):
 
 class Post(models.Model):
 
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=300)
     article = models.TextField()
-    tags = models.CharField(max_length=300, blank=True, null=True)
+    tags = models.CharField(max_length=500, blank=True, null=True)
+    #image = models.ImageField(null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now)
     tournament = models.ForeignKey(Tournament, null=True, blank=True)
     players = models.ManyToManyField(Player)
+
+    def __str__(self):
+        return self.title
 

@@ -39,10 +39,14 @@ def index(request):
     players = Player.objects.all()
     top_players = get_top(players)
 
+    posts = Post.objects.all().order_by(
+            'date')[:15]
+
     return render(request, 'hsapp/index.html', {'tournaments': tournaments[:5],
                                                 'matches': matches,
                                                 'upcoming_matches': upcoming_matches,
-                                                'players': top_players})
+                                                'players': top_players,
+                                                'posts': posts})
 
 def tournament_list(request):
     tournaments = Tournament.objects.filter(
@@ -391,6 +395,77 @@ class FeedbackView(LoginRequiredMixin, View):
             name = form.cleaned_data['name']
             messages.info(request, 'Thank you for your feedback, {0}!'.format(name))
             return redirect('hs:index')
+
+class AddPost(LoginRequiredMixin, View):
+    """
+    Add new post to posts feed
+    """
+    def get(self, request):
+        """
+        Get request method
+        """
+        form = AddPostForm()
+        return render(request, 'hsapp/addpost.html', {'form': form})
+
+    def post(self, request):
+        """
+        Post request method
+        """
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            form = form.cleaned_data
+            post = Post.objects.create(title=form['title'], tags=form['tags'],
+                                       article=form['article'])
+            post.save()
+            messages.info(request, 'Post added!')
+            return redirect('hs:index')
+        else:
+            messages.info(request, 'Error in form: {0}'.format(form.errors))
+            return render(request, 'hsapp/addpost.html', {'form': form})
+
+class EditPost(LoginRequiredMixin, View):
+    """
+    Edit exising post to posts feed
+    """
+    def get(self, request, pk):
+        """
+        Get request method
+        """
+        post = Post.objects.get(pk=pk)
+        form = AddPostForm(initial = {'title': post.title, 'tags': post.tags, 'article': post.article })
+        return render(request, 'hsapp/addpost.html', {'form': form})
+
+    def post(self, request, pk):
+        """
+        Post request method
+        """
+        post = Post.objects.get(pk=pk)
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            form = form.cleaned_data
+            post.title = form['title']
+            post.tags = form['tags']
+            post.article = form['article']
+            post.save()
+            messages.info(request, 'Post added!')
+            return redirect('hs:index')
+        else:
+            messages.info(request, 'Error in form: {0}'.format(form.errors))
+            return render(request, 'hsapp/addpost.html', {'form': form})
+
+def post_detail(request, pk):
+    """
+    Post detail page view
+    """
+    post = Post.objects.get(pk=pk)
+
+    return render(request, 'hsapp/article.html', {'post': post})
+
+def post_list(request):
+    posts = Post.objects.all()
+
+    return render(request, 'hsapp/articles.html', {'posts': posts})
+
 
 
 def temp(request):
