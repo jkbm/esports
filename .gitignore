@@ -6,8 +6,8 @@ virenv
 ///static
 .DS_Store
 esports/local_settings.py
-/esports/media/cards
-/esports/media/hsapp
+esports/media/cards
+esports/media/hsapp
 *.sqlite3
 users.txt
 /htmlcov
