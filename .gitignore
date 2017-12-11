@@ -12,3 +12,4 @@ esports/media/HSapp
 users.txt
 /htmlcov
 .coverage
+*.json
